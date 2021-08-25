@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+header {
+    background: blue;
+    color: white;
+    padding: 16px;
+}
+
+#tengah {
+    display: flex;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    background: gray;
+}
+
+nav>a {
+    padding: 16px;
+    text-decoration: none;
+    color: black;
+}
+
+nav>a:hover {
+    background: black;
+    color: white;
+}
+
+main {
+    padding: 16px;
+}
+
+footer {
+    background: #222;
+    color: white;
+    padding: 16px;
+    text-align: center;
+}
