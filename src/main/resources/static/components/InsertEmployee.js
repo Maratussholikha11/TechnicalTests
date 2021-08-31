@@ -1,0 +1,63 @@
+import html from "../js/htm.js";
+import {Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField} from '../js/material-ui.js';
+import {useState} from "../js/react.js";
+
+function InsertEmployee(props) {
+    const [employee, setEmployee] = useState({});
+
+    const handleChange = (event) => setEmployee({...employee, [event.target.name]: event.target.value});
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(employee);
+        fetch('/employees', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(employee)
+        })
+            .then(response => {
+                console.log(response)
+                return response.json();
+            })
+            .then(json => console.log(json))
+    };
+
+    return html`
+        <${Paper} elevation=${3} sx=${{p: 4}}>
+            <h1>Tambah Employee</h1>
+            <form n onSubmit=${handleSubmit}>
+                <${Stack} spacing=${2}>
+                    <${TextField} id="standard-basic" label="Nama Lengkap" variant="standard" name="namaLengkap" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="NIP" variant="standard" name="nip" onChange=${handleChange}/>
+                    <${FormControl} fullWidth>
+                        <${InputLabel} id="role-label" >Bagian<//>
+                        <${Select}
+                                labelId="role-label"
+                                id="role-select"
+                                value=${employee.roleId}
+                                label="Bagian"
+                                name="roleId"
+                                onChange=${handleChange}
+                        >
+                            <${MenuItem} value=${1}>HRD<//>
+                            <${MenuItem} value=${2}>Karyawan<//>
+                           
+                        <//>
+                    <//>
+                    <${TextField} id="standard-basic" label="Divisi" variant="standard" name="divisi" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="Email" variant="standard" name="email" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="Username" variant="standard" name="username" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="Password" variant="standard" name="password" onChange=${handleChange}/>
+                    <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
+                        <${Button} type="reset" variant="outlined">Kembali<//>
+                        <${Button} type="submit" variant="contained">Simpan<//>
+                    <//>
+                <//>
+            </form>
+        <//>
+    `;
+}
+
+export default InsertEmployee;

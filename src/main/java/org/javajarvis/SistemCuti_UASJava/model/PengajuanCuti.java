@@ -12,15 +12,27 @@ import java.util.List;
 @Data
 @Setter @Getter
 public class PengajuanCuti {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pengajuan_cuti_id")
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "status_cuti_id")
     private StatusCuti statusCuti;
 
-    @Column(name = "pengganti_id")
-    private  Integer penggantiId;
+    @ManyToOne
+    @JoinColumn(name = "pengganti_id")
+    private Employee pengganti;
 
-    @Column(name = "hrd_id")
-    private Integer hrdId;
+    @ManyToOne
+    @JoinColumn(name = "hrd_id")
+    private Employee hrd;
 
     private String alamat;
 
@@ -31,26 +43,5 @@ public class PengajuanCuti {
 
     @Column(name = "lama_cuti")
     private Integer lamaCuti;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pengajuan_cuti_id")
-
-    public Integer getId() {
-        return id;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "status_cuti_id")
-    public StatusCuti getStatusCuti() {
-        return statusCuti;
-    }
-
 
 }

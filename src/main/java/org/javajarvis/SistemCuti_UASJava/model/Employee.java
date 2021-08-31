@@ -18,9 +18,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_employee")
-@Setter @Getter
-@NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class Employee extends BaseEntity<String> implements Serializable { //implements UserDetails
 
     private Integer id;
@@ -65,18 +64,10 @@ public class Employee extends BaseEntity<String> implements Serializable { //imp
     @Column(name = "password", nullable = false)
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Employee(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+//    public Employee(String username, String password) {
+//        this.username = username;
+//        this.password = password;
+//    }
 
 //    @Override
 //    @Transient
