@@ -3,12 +3,6 @@ body {
     font-family: sans-serif;
 }
 
-header {
-    background: blue;
-    color: white;
-    padding: 16px;
-}
-
 #tengah {
     display: flex;
 }
