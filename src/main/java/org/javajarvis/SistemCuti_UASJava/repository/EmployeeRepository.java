@@ -1,6 +1,7 @@
 package org.javajarvis.SistemCuti_UASJava.repository;
 
 import org.javajarvis.SistemCuti_UASJava.model.Employee;
+import org.javajarvis.SistemCuti_UASJava.model.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     public List<Employee> findEmployeeByNameLike(@PathParam("name") String name);
 
 
+    Employee findEmployeeByUsernameAndPassword(String username, String password);
 }
