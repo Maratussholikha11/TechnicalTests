@@ -27,26 +27,10 @@ function InsertCuti(props){
     return html`
         <${Paper} elevation=${3} sx=${{p: 4}}>
             <h1>Tambah Pengajuan Cuti</h1>
-            <form n onSubmit=${handleSubmit}>
+            <form onSubmit=${handleSubmit}>
                 <${Stack} spacing=${2}>
-                    <${TextField} id="standard-basic" label="Employee Id" variant="standard" name="employeeId" onChange=${handleChange}/>
-                    <${FormControl} fullWidth>
-                        <${InputLabel} id="status-cuti" >Jenis Cuti<//>
-                        <${Select}
-                                labelId="status-cuti"
-                                id="status-select"
-                                value=${karyawan.statusCuti}
-                                label="karyawan"
-                                name="statusCutiId"
-                                onChange=${handleChange}
-                        >
-                            <${MenuItem} value=${1}>Tahunan<//>
-                            <${MenuItem} value=${2}>Lintas Tahun<//>
-                           
-                        <//>
-                    <//>
-                    <${TextField} id="standard-basic" label="Id Karyawan Pengganti" variant="standard" name="penggantiId" onChange=${handleChange}/>            
-                    <${TextField} id="standard-basic" label="Id HRD" variant="standard" name="hrdId" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="Tanggal" variant="standard" name="tanggal" onChange=${handleChange}/>
+                    <${TextField} id="standard-basic" label="Id Karyawan Pengganti" variant="standard" name="penggantiId" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="Alamat" variant="standard" name="alamat" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="No Telphone" variant="standard" name="noTelp" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="Keterangan" variant="standard" name="keterangan" onChange=${handleChange}/>

@@ -1,5 +1,16 @@
 import html from "../js/htm.js";
-import {Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField} from '../js/material-ui.js';
+import {
+    Button,
+    Dialog, DialogActions, DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    Stack,
+    TextField
+} from '../js/material-ui.js';
 import {useState} from "../js/react.js";
 
 function InsertEmployee(props) {
@@ -25,9 +36,9 @@ function InsertEmployee(props) {
     };
 
     return html`
-        <${Paper} elevation=${3} sx=${{p: 4}}>
-            <h1>Tambah Employee</h1>
-            <form n onSubmit=${handleSubmit}>
+        <${Dialog} open=${props.open} onClose=${props.onClose} scroll="paper" component="form" fullWidth>
+            <${DialogTitle}>Tambah Employee<//>
+            <${DialogContent} dividers>
                 <${Stack} spacing=${2}>
                     <${TextField} id="standard-basic" label="Nama Lengkap" variant="standard" name="namaLengkap" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="NIP" variant="standard" name="nip" onChange=${handleChange}/>
@@ -50,12 +61,12 @@ function InsertEmployee(props) {
                     <${TextField} id="standard-basic" label="Email" variant="standard" name="email" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="Username" variant="standard" name="username" onChange=${handleChange}/>
                     <${TextField} id="standard-basic" label="Password" variant="standard" name="password" onChange=${handleChange}/>
-                    <${Stack} direction="row" spacing=${2} justifyContent="flex-end">
-                        <${Button} type="reset" variant="outlined">Kembali<//>
-                        <${Button} type="submit" variant="contained">Simpan<//>
-                    <//>
                 <//>
-            </form>
+            <//>
+            <${DialogActions}>
+                <${Button} type="reset" variant="outlined">Kembali<//>
+                <${Button} type="submit" variant="contained">Simpan<//>
+            <//>
         <//>
     `;
 }

@@ -1,7 +1,20 @@
 import html from "../js/htm.js";
-import {AppBar, Box, Button, Divider, IconButton, Menu, MenuItem, Toolbar, Typography} from "../js/material-ui.js";
+import {
+    AppBar,
+    Box,
+    Button,
+    Divider,
+    IconButton,
+    Link,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography
+} from "../js/material-ui.js";
 import MaterialIcon from "./MaterialIcon.js";
 import {useState} from "../js/react.js";
+import Logout from "./Logout.js";
+import GantiPassword from "./GantiPassword.js";
 
 function Header(props) {
 
@@ -14,9 +27,11 @@ function Header(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const [openGantiPassword, setOpenGantiPassword] = useState(false);
+    const [openLogout, setOpenLogout] = useState(false);
 
     return html`
-            <${AppBar} position="static">
+            <${AppBar} position="static" sx=${{ background: "white", color:"#00c853"}}>
                 <${Toolbar}>
                     <${IconButton}
                         size="large"
@@ -28,10 +43,12 @@ function Header(props) {
                     >
                         <${MaterialIcon}>menu<//>
                     <//>
-                    <${Typography} variant="h6" component="div" sx=${{ flexGrow: 1 }}>
-                        Sistem Cuti
+                    <${Typography} variant="h6" component="div" sx=${{ flexGrow: 1, color:"#4c8c4a"}}>
+                        <span style=${{color:"#009624"}}>G-Four</span>Leave
                     <//>
-                    
+                    <${Typography} variant="h6" component="div" sx=${{ color:"#009624"}}>
+                        <span style=${{color:"#4c8c4a"}}>Halo </span>Anjar Maulana
+                    <//>
                     <div>
                         <${IconButton}
                                 size="large"
@@ -59,9 +76,11 @@ function Header(props) {
                             onClose=${handleClose}
                             >
                             <${MenuItem} onClick=${handleClose}><${MaterialIcon}>person<//> Profil Saya<//>
-                            <${MenuItem} onClick=${handleClose}><${MaterialIcon}>password<//> Ganti Password<//>
+                            <${MenuItem} onClick=${() => setOpenGantiPassword(true)} component=${Link} to="/gantipasword"><${MaterialIcon} >password<//> Ganti Password<//>
+                            <${GantiPassword} open=${openGantiPassword} onClose=${() => setOpenGantiPassword()}/>
                             <${Divider}/>
-                            <${MenuItem} onClick=${handleClose}><${MaterialIcon}>logout<//> Keluar<//>
+                            <${MenuItem} onClick=${() => setOpenLogout(true)} component=${Link} to="/logout"><${MaterialIcon}>logout<//> Keluar<//>
+                            <${Logout} open=${openLogout} onClose=${() => setOpenLogout()}/>
                         <//>
                     </div>
                     

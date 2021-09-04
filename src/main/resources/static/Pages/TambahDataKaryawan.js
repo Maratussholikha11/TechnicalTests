@@ -1,25 +1,22 @@
 import html from "../js/htm.js";
 import {
-    Button, IconButton,
-    Paper, Stack,
-    styled,
+    Button,
+    Paper,
+    Stack, styled,
     Table,
-    TableBody,
-    TableCell,
-    tableCellClasses,
+    TableBody, TableCell, tableCellClasses,
     TableContainer,
     TableHead,
-    TableRow, Typography
+    TableRow,
+    Typography
 } from "../js/material-ui.js";
-import MaterialIcon from "../components/MaterialIcon.js";
-import {Link} from "../js/react-router-dom.js";
-import InsertCuti from "../components/InsertCuti.js";
-import InsertEmployee from "../components/InsertEmployee.js";
 import {useState} from "../js/react.js";
+import MaterialIcon from "../components/MaterialIcon.js";
+import InsertEmployee from "../components/InsertEmployee.js";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor:"#512da8",
+        backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -49,17 +46,25 @@ const rows = [
     createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-function MonitoringCutiHRD() {
+function TambahDataKaryawan(){
 
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    }
     return html`
-         <${Stack} padding=${2} spacing=${2}>
+     <${Stack} padding=${2} spacing=${2} alignItems="flex-start" >
             <${Typography} variant="h4" sx=${{color:"#00c853"}}>
-                Monitoring
+                Tambah Data Karyawan
             <//>
-            <${Stack} padding=${2} spacing=${2} alignItems="flex-start">
-            <${TableContainer} component=${Paper} >
-                <${Table} sx=${{ minWidth: 700}} aria-label="customized table">
-                    <${TableHead} >
+         <${Button} type="submit" variant="outlined" onClick=${() => setOpenDialog(true)} startIcon=${html`<${MaterialIcon}>add_circle<//>`}>
+             Tambah
+         <//>
+         <${InsertEmployee} open=${openDialog} onClose=${handleCloseDialog}/>
+        <${TableContainer} component=${Paper}>
+                <${Table} sx=${{minWidth: 700}} aria-label="customized table">
+                    <${TableHead}>
                         <${TableRow}>
                             <${StyledTableCell}>ID Pengajuan<//>
                             <${StyledTableCell} align="right">Nama<//>
@@ -79,22 +84,12 @@ function MonitoringCutiHRD() {
                             <${StyledTableCell} align="right">${row.fat}<//>
                             <${StyledTableCell} align="right">${row.carbs}<//>
                             <${StyledTableCell} align="right">${row.protein}<//>
-                            <${StyledTableCell} align="right">
-                                <${IconButton}>
-                                    <${MaterialIcon}>check_circle_outline<//>
-                                <//>
-                                <${IconButton}>
-                                    <${MaterialIcon}>highlight_off<//>
-                                <//>
-                            <//>
                         <//>
                         `)}
                     <//>
                 <//>
-            <//>
-            <//>
-    <//>
+        <//>
+     <//>
     `;
 }
-
-export default MonitoringCutiHRD;
+export default TambahDataKaryawan;
