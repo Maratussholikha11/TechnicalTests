@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "tbl_detail_pengajuan_cuti")
 @Data @Setter @Getter
-public class    DetailPengajuanCuti {
+public class    DetailPengajuanCuti extends BaseEntity<String>  {
 
     private Integer id;
     private  PengajuanCuti pengajuanCuti;
