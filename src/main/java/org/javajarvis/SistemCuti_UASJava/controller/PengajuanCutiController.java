@@ -10,6 +10,7 @@ import org.javajarvis.SistemCuti_UASJava.model.PengajuanCuti;
 import org.javajarvis.SistemCuti_UASJava.model.StatusCuti;
 import org.javajarvis.SistemCuti_UASJava.repository.DetailPengajuanCutiRepository;
 import org.javajarvis.SistemCuti_UASJava.repository.PengajuanCutiRepository;
+import org.javajarvis.SistemCuti_UASJava.repository.StatusCutiRepository;
 import org.javajarvis.SistemCuti_UASJava.service.DetailPengajuanCutiService;
 import org.javajarvis.SistemCuti_UASJava.service.EmailService;
 import org.javajarvis.SistemCuti_UASJava.service.PDFExporter;
@@ -26,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pengajuancuti")
@@ -47,46 +49,36 @@ public class PengajuanCutiController {
     @Autowired
     private ModelMapper modelMapper;
 
-    StatusCuti statusCuti;
+    @Autowired
+    StatusCutiRepository sr;
 
     @PostMapping
     public String save(@RequestBody PengajuanCuti pengajuanCuti) throws IOException, DocumentException {
 
         ResponseData<PengajuanCuti> response = new ResponseData<>();
-        Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        PengajuanCuti pc  = modelMapper.map(pengajuanCuti, PengajuanCuti.class);
-        String email = user.getEmail();
-        String mailTo = "maratus.solikha55@gmail.com";
-        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-        String currentDateTime = dateFormatter.format(new Date());
-        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Permohonan ijin cuti kerja\n\n" +
-                "Kepada Yth, \nKepala PT PUB Jarvis\nDi tempat\n\nDengan hormat,\nYang bertanda tangan dibawah ini:\n\n" +
-                "Nama    : " + user.getNamaLengkap() + "\nNIP      :" + user.getNip()+
-                "\nJabatan  :" + user.getDivisi() + "\n\n" +
-                "\nBermaksud mengajukan jenis cuti selama " + pengajuanCuti.getLamaCuti()  +
-                " hari, yaitu pada tanggal (detail cuti)." +
-                "\nDemikian permohonan cuti ini saya ajukan. Terimakasih atas perhatian Bapak/Ibu\n\n" +
-                "Hormat Saya \n\n" + user.getNamaLengkap();
-
+//        PengajuanCuti pc  = modelMapper.map(pengajuanCuti, PengajuanCuti.class);
+        StatusCuti s = sr.findById(1).get();
+        System.out.println(s);
+        pengajuanCuti.setStatusCuti(s);
         response.setPayload(service.save(pengajuanCuti));
-        emailService.sendEmail(mailTo,"Surat Permohonan Cuti ",text);
-        return "succes save and send";
+        return "succes save";
     }
 
-    @PostMapping("/cancel")
+    @PutMapping("/cancel")
     public String cancel(@RequestBody PengajuanCuti pengajuanCuti) throws IOException, DocumentException {
         ResponseData<PengajuanCuti> response = new ResponseData<>();
         Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        PengajuanCuti pc  = modelMapper.map(pengajuanCuti, PengajuanCuti.class);
+        StatusCuti s = sr.findById(5).get();
+        pengajuanCuti.setStatusCuti(s);
         String email = user.getEmail();
         String mailTo = "maratus.solikha55@gmail.com";
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         String currentDateTime = dateFormatter.format(new Date());
-        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Cancel ijin cuti kerja\n\n" +
+        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Pembatalan izin cuti kerja\n\n" +
                 "Kepada Yth, \nKepala PT PUB Jarvis\nDi tempat\n\nDengan hormat,\nYang bertanda tangan dibawah ini:\n\n" +
-                "Nama    : " + user.getNamaLengkap() + "\nNIP      :" + user.getNip()+
+                "Nama    : " + user.getNamaLengkap() + "\nNIP       :" + user.getNip()+
                 "\nJabatan  :" + user.getDivisi() + "\n\n" +
-                "\nBermaksud membatalkan ijin  cuti kerja  selama" + pengajuanCuti.getLamaCuti()  +
+                "\nBermaksud membatalkan izin  cuti kerja  selama " + pengajuanCuti.getLamaCuti()  +
                 " hari, yaitu pada tanggal (detail cuti)." +
                 "\nDemikian pembatalan cuti saya sampaikan . Terimakasih atas perhatian Bapak/Ibu\n\n" +
                 "Hormat Saya \n\n" + user.getNamaLengkap();
@@ -130,10 +122,10 @@ public class PengajuanCutiController {
     }
 
 
-    @PutMapping
-    public PengajuanCuti update(@RequestBody PengajuanCuti pengajuanCuti){
-        return  service.save(pengajuanCuti);
-    }
+//    @PutMapping
+//    public PengajuanCuti update(@RequestBody PengajuanCuti pengajuanCuti){
+//        return  service.save(pengajuanCuti);
+//    }
 
     @DeleteMapping
     public void delete(@RequestBody Integer id){
@@ -150,19 +142,91 @@ public class PengajuanCutiController {
         return service.findByStatusCutiOpen(id);
     }
 
-    @GetMapping("/pdf")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType("application/pdf");
+//    @GetMapping("/pdf")
+//    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+//        response.setContentType("application/pdf");
+//        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+//        String currentDateTime = dateFormatter.format(new Date());
+//
+//        String headerKey = "Content-Disposition";
+//        String headerValue = "attachment; filename = pengajuan" + currentDateTime + ".pdf";
+//        response.setHeader(headerKey, headerValue);
+//
+//        PDFExporter exporter = new PDFExporter ();
+//        exporter.createPdf(response);
+//
+//    }
+
+    @PutMapping("/send")
+    public String send(@RequestBody PengajuanCuti pengajuanCuti) throws IOException, DocumentException {
+
+        ResponseData<PengajuanCuti> response = new ResponseData<>();
+        Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        StatusCuti s = sr.findById(2).get();
+        pengajuanCuti.setStatusCuti(s);
+        String email = user.getEmail();
+        String mailTo = "maratus.solikha55@gmail.com";
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         String currentDateTime = dateFormatter.format(new Date());
+        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Permohonan ijin cuti kerja\n\n" +
+                "Kepada Yth, \nKepala PT PUB Jarvis\nDi tempat\n\nDengan hormat,\nYang bertanda tangan dibawah ini:\n\n" +
+                "Nama    : " + user.getNamaLengkap() + "\nNIP      :" + user.getNip()+
+                "\nJabatan  :" + user.getDivisi() + "\n\n" +
+                "\nBermaksud mengajukan jenis cuti selama " + pengajuanCuti.getLamaCuti()  +
+                " hari, yaitu pada tanggal (detail cuti)." +
+                "\nDemikian permohonan cuti ini saya ajukan. Terimakasih atas perhatian Bapak/Ibu\n\n" +
+                "Hormat Saya \n\n" + user.getNamaLengkap();
 
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename = pengajuan" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-
-        PDFExporter exporter = new PDFExporter ();
-        exporter.createPdf(response);
-
+        response.setPayload(service.save(pengajuanCuti));
+        emailService.sendEmail(mailTo,"Surat Permohonan Cuti ",text);
+        return "succes send";
     }
+
+    @PutMapping("/approve")
+    public String approve(@RequestBody PengajuanCuti pengajuanCuti) throws IOException, DocumentException {
+
+        ResponseData<PengajuanCuti> response = new ResponseData<>();
+        Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        StatusCuti s = sr.findById(3).get();
+        pengajuanCuti.setStatusCuti(s);
+        String email = user.getEmail();
+        String mailTo = pengajuanCuti.getEmployee().getEmail();
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDateTime = dateFormatter.format(new Date());
+        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Konfirmasi izin cuti kerja\n\n" +
+                "Kepada Yth, \nSaudara "+ user.getNamaLengkap() + "\nDi tempat\n\nMerujuk pada surat yang saudara ajukan, perihal permohonan izin cuti\n\n" +
+                "Berkenaan dengan perihal tersebut kami atas nama HRD PT PUB Jarvis menyatakan 'MEMBERIKAN IZIN' atas permohonan izin cuti kerja selama" + pengajuanCuti.getLamaCuti() +
+                " hari. " +
+                "\nDemikian surat ini kami sampaikan agar digunakan sebagaimana mestinya. " +
+                " HRD PT PUB Jarvis \n\n" + user.getNamaLengkap();
+
+        response.setPayload(service.save(pengajuanCuti));
+        emailService.sendEmail(mailTo,"Surat Konfirmasi Izin Cuti",text);
+        return "succes send";
+    }
+
+    @PutMapping("/reject")
+    public String reject(@RequestBody PengajuanCuti pengajuanCuti) throws IOException, DocumentException {
+
+        ResponseData<PengajuanCuti> response = new ResponseData<>();
+        Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        StatusCuti s = sr.findById(5).get();
+        pengajuanCuti.setStatusCuti(s);
+        String email = user.getEmail();
+        String mailTo = pengajuanCuti.getEmployee().getEmail();
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDateTime = dateFormatter.format(new Date());
+        String text = "Bandung, " + currentDateTime + "\n\nPerihal    : Konfirmasi izin cuti kerja\n\n" +
+                "Kepada Yth, \nSaudara "+ user.getNamaLengkap() + "\nDi tempat\n\nMerujuk pada surat yang saudara ajukan, perihal permohonan izin cuti\n\n" +
+                "Berkenaan dengan perihal tersebut kami atas nama HRD PT PUB Jarvis menyatakan 'MENOLAK ' atas permohonan izin cuti kerja selama" + pengajuanCuti.getLamaCuti() +
+                " hari. " +
+                "\nDemikian surat ini kami sampaikan agar digunakan sebagaimana mestinya. " +
+                " HRD PT PUB Jarvis \n\n" + user.getNamaLengkap();
+
+        response.setPayload(service.save(pengajuanCuti));
+        emailService.sendEmail(mailTo,"Surat Konfirmasi Izin Cuti",text);
+        return "succes send";
+    }
+
 }
 

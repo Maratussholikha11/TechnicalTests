@@ -1,5 +1,6 @@
 package org.javajarvis.SistemCuti_UASJava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class    DetailPengajuanCuti extends BaseEntity<String>  {
     }
 
     @OneToOne
+    @JsonIgnoreProperties({"detailPengajuanCuti"})
     @JoinColumn(name = "pengajuan_cuti_id")
     public PengajuanCuti getPengajuanCuti() {
         return pengajuanCuti;

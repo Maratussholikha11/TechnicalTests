@@ -85,7 +85,7 @@ public class EmployeeController {
         return services.findOne(id);
     }
 
-    @PostMapping("/changepassword")
+    @PutMapping("/changepassword")
     public String change(@RequestBody String pass){
         Employee user = (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setPassword(pass);

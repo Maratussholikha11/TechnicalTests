@@ -18,6 +18,7 @@ public class PengajuanCuti extends BaseEntity<String> implements Serializable {
     private Integer id;
     private Employee employee;
     private StatusCuti statusCuti;
+    private DetailPengajuanCuti detailPengajuanCuti;
 
     @Column(name = "pengganti_id")
     private  Integer penggantiId;
@@ -55,5 +56,14 @@ public class PengajuanCuti extends BaseEntity<String> implements Serializable {
         return statusCuti;
     }
 
+    @JsonIgnoreProperties({"pengajuanCuti"})
+    @OneToOne(mappedBy = "pengajuanCuti", cascade = CascadeType.ALL)
+    public DetailPengajuanCuti getDetailPengajuanCuti() {
+        return detailPengajuanCuti;
+    }
 
+    public void setDetailPengajuanCuti(DetailPengajuanCuti detailPengajuanCuti) {
+        detailPengajuanCuti.setPengajuanCuti(this);
+        this.detailPengajuanCuti = detailPengajuanCuti;
+    }
 }
